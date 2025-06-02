@@ -1,0 +1,18 @@
+# Python virtual environment
+venv/
+
+# Logs
+logs/
+
+# Large data files (optional, remove if you want to include)
+True_players_data.csv
+
+# Output CSVs
+predictions_gk.csv
+predictions_field.csv
+kafka_predictions_gk.csv
+kafka_predictions_field.csv
+
+# Temporary files
+*.pyc
+__pycache__/
