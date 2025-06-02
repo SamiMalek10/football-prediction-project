@@ -2,6 +2,7 @@
 
 ## 🎯 Objectif
 Développer un système Big Data complet pour prédire la valeur marchande des joueurs de football en utilisant des technologies modernes.
+À l'aide d'un pipeline d'apprentissage automatique construit avec Apache Spark, Kafka et HDFS. Il traite les données des joueurs, forme les modèles RandomForest pour les gardiens de but et les joueurs de terrain, et diffuse les prédictions via Kafka.
 
 ## 🏗️ Architecture
 
@@ -14,7 +15,7 @@ Kafka 2.3.1 (Stream)
     ↓
 Spark 3.5.1 (ML Pipeline)
     ↓
-HDFS 2.7.3 ← → Hive 2.3.5
+HDFS 2.7.3
     ↓
 Jupyter Dashboard
 ```
@@ -60,7 +61,7 @@ python scripts/web_scraping_sofifa.py
 
 ### Entraînement ML
 ```python
-python scripts/spark_ml_pipeline.py
+python scripts/player_value_predictor.py
 ```
 
 ### Dashboard
@@ -164,9 +165,6 @@ Il est organisé pour permettre à un nouvel utilisateur de :
 - Résoudre les problèmes courants
 - Contribuer au projet
 
-# Football Player Value Prediction
-
-This project predicts football player market values using a machine learning pipeline built with Apache Spark, Kafka, and HDFS. It processes player data, trains RandomForest models for goalkeepers and field players, and streams predictions via Kafka.
 
 ## Directory Structure
 - `scripts/`: Python scripts (`main_pipeline.py`, `player_value_predictor.py`).
