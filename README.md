@@ -1,4 +1,4 @@
-# 🏈 Projet Big Data Football - Prédiction Valeur des Joueurs
+# Projet Big Data Football - Prédiction Valeur des Joueurs
 
 ## 🎯 Objectif
 Développer un système Big Data complet pour prédire la valeur marchande des joueurs de football en utilisant des technologies modernes.
@@ -19,6 +19,7 @@ HDFS 2.7.3
     ↓
 Jupyter Dashboard
 ```
+![Pipeline Architecture](/Architecture.png)  
 
 ## 🚀 Installation et Démarrage
 
