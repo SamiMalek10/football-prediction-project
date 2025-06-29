@@ -12,3 +12,4 @@ plotly==5.15.0
 dash==2.12.1
 lxml==4.9.3
 notebook==7.0.2
+flask

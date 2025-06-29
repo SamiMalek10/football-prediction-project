@@ -48,7 +48,7 @@ def main():
     logger.info("📋 Step: Web Scraping")
     logger.info("🌐 Starting web scraping...")
     try:
-        #scrape_main()
+        scrape_main()
         logger.info("✅ Scraping completed")
     except Exception as e:
         logger.error(f"❌ Scraping error: {e}")
@@ -61,11 +61,26 @@ def main():
     try:
         predictor = FootballPlayerValuePredictor()
         df = predictor.load_data_from_csv("/home/sami/Desktop/football_prediction_project/True_players_data.csv")
-        model_gk, gk_features, model_field, field_features = predictor.train_model(df)
-        predictor.save_model(model_gk, "player_value_model_gk")
-        predictor.save_model(model_field, "player_value_model_field")
-        predictor.analyze_feature_importance(model_gk, gk_features, "goalkeeper")
-        predictor.analyze_feature_importance(model_field, field_features, "field")
+        (model_rf_gk, model_svm_gk, model_xgb_gk, model_dl_gk, gk_features,
+         model_rf_field, model_svm_field, model_xgb_field, model_dl_field, field_features) = predictor.train_model(df)
+        
+        predictor.save_model(model_rf_gk, "player_value_model_rf_gk")
+        predictor.save_model(model_svm_gk, "player_value_model_svm_gk")
+        predictor.save_model(model_xgb_gk, "player_value_model_xgb_gk")
+        predictor.save_model(model_dl_gk, "player_value_model_dl_gk")
+        predictor.save_model(model_rf_field, "player_value_model_rf_field")
+        predictor.save_model(model_svm_field, "player_value_model_svm_field")
+        predictor.save_model(model_xgb_field, "player_value_model_xgb_field")
+        predictor.save_model(model_dl_field, "player_value_model_dl_field")
+        
+        predictor.analyze_feature_importance(model_rf_gk, gk_features, "goalkeeper_rf")
+        predictor.analyze_feature_importance(model_rf_field, field_features, "field_rf")
+        # Skip SVM, XGBoost, DeepLearning for feature importance as they use coefficients or lack support
+        # predictor.analyze_feature_importance(model_svm_gk, gk_features, "goalkeeper_svm")  # Uncomment if coefficients are desired
+        # predictor.analyze_feature_importance(model_svm_field, field_features, "field_svm")  # Uncomment if coefficients are desired
+        
+        df_stream = predictor.load_data_from_kafka()  # Load Kafka data for debugging
+        logger.info(f"Debug: Kafka DataFrame schema: {df_stream.schema if df_stream else 'None'}")
         predictor.stream_predictions()
         logger.info("✅ ML pipeline completed")
     except Exception as e:
@@ -78,10 +93,10 @@ def main():
     logger.info("💾 Verifying HDFS saves...")
     try:
         hdfs_files = [
-            ("predictions_gk.csv", "hdfs://localhost:9000/football/data/predictions_gk.csv"),
-            ("predictions_field.csv", "hdfs://localhost:9000/football/data/predictions_field.csv"),
-            ("kafka_predictions_gk.csv", "hdfs://localhost:9000/football/data/kafka_predictions_gk.csv"),
-            ("kafka_predictions_field.csv", "hdfs://localhost:9000/football/data/kafka_predictions_field.csv")
+            ("predictions_gk.csv", "hdfs://localhost:9000/football/predictions_gk.csv"),
+            ("predictions_field.csv", "hdfs://localhost:9000/football/predictions_field.csv"),
+            ("kafka_predictions_gk.csv", "hdfs://localhost:9000/football/kafka_predictions_gk.csv"),
+            ("kafka_predictions_field.csv", "hdfs://localhost:9000/football/kafka_predictions_field.csv")
         ]
         for local_file, hdfs_path in hdfs_files:
             if not verify_hdfs_path(spark, hdfs_path):
